@@ -1,6 +1,12 @@
 import random
 import google.generativeai as genai
 
+# LLM Configuration
+llm_config = {
+    "temperature": 0.9,
+    "max_tokens": 150,
+    "top_p": 0.95,
+}
 GENRES = ["Shakespearean", "Gym Bro", "Zen Master", "Sci-Fi Futurist", "Rap/Hip-Hop", "Sarcastic"]
 
 class StoryGenerator:
@@ -25,13 +31,3 @@ class StoryGenerator:
         """
         response = self.model.generate_content(prompt, generation_config=llm_config)
         return {"genre": genre, "story": response.text}
-
-# Example usage
-if __name__ == "__main__":
-    API_KEY = "your_api_key_here"  # Replace with your actual API key
-    generator = StoryGenerator(api_key=API_KEY)
-    
-    base_prompt = "I'm struggling to stay motivated at work."
-    result = generator.generate_story(base_prompt)
-    print(f"Genre: {result['genre']}")
-    print(f"Story:\n{result['story']}")
