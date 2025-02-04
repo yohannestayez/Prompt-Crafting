@@ -1,32 +1,39 @@
-from flask import Flask, request, jsonify
-from Story_generator import StoryGenerator  
+from flask import Flask, request, jsonify, render_template
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+from Story_generator import StoryGroupChat, llm_config
+import asyncio
+
+# Load environment variables
 load_dotenv()
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
+# Configure Gemini
+genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
+
 app = Flask(__name__)
 
-story_generator = StoryGenerator(api_key=GOOGLE_API_KEY)
+# Initialize StoryGroupChat with our LLM configuration
+story_chat = StoryGroupChat(llm_config)
 
-@app.route('/generate-story', methods=['POST'])
+def run_async(coro):
+    return asyncio.run(coro)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/generate', methods=['POST'])
 def generate_story():
-    try:
-        # Parse JSON input
-        data = request.get_json()
-        base_prompt = data.get("base_prompt")
-        genre = data.get("genre", None)  # Optional genre
-
-        if not base_prompt:
-            return jsonify({"error": "base_prompt is required"}), 400
-
-        # Generate the story
-        result = story_generator.generate_story(base_prompt, genre)
-
-        # Return the response
-        return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    data = request.get_json()
+    base_prompt = data.get('base_prompt')
+    genre = data.get('genre')
+    
+    if not base_prompt:
+        return jsonify({'error': 'base_prompt is required'}), 400
+        
+    result = run_async(story_chat.generate_story(base_prompt, genre))
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
