@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 from Story_generator import StoryGenerator  
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 app = Flask(__name__)
 
-story_generator = StoryGenerator(api_key=API_KEY)
+story_generator = StoryGenerator(api_key=GOOGLE_API_KEY)
 
 @app.route('/generate-story', methods=['POST'])
 def generate_story():
