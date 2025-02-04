@@ -96,7 +96,7 @@ class PromptVariationAgent(StoryAgentBase):
     def __init__(self):
         system_message = """
         You are the PromptVariation agent responsible for generating the initial story draft.
-        Use zero-shot and few-shot prompting techniques to create a compelling narrative structure.
+        Your task is to create a compelling narrative structure.
         """
         super().__init__(
             name="PromptVariation",
@@ -115,7 +115,7 @@ class PromptVariationAgent(StoryAgentBase):
         Example 2:
         Setback → Learning → Adaptation → Success
         
-        Generate a unique 100-150 word story following a similar narrative arc.
+        Generate a unique 150-250 word story following a similar narrative arc.
         """
         
         return self.generate_response(prompt)
@@ -125,14 +125,6 @@ class GenreStylingAgent(StoryAgentBase):
         system_message = """
         You are the GenreStyling agent responsible for adapting the story to a specific genre.
         Apply appropriate language, metaphors, and stylistic elements based on the chosen genre.
-        
-        For the Realistic genre:
-        - Provide practical, down-to-earth advice and perspectives
-        - Use clear, straightforward language without metaphors or stylistic flourishes
-        - Draw from real-world experiences and common situations
-        - Focus on actionable steps and realistic outcomes
-        - Acknowledge both challenges and opportunities in a balanced way
-        - Maintain empathy while being honest and direct
         """
         super().__init__(
             name="GenreStyling",
@@ -141,7 +133,7 @@ class GenreStylingAgent(StoryAgentBase):
     
     def style_story(self, draft: str, genre: str) -> str:
         genre_prompts = {
-            "Realistic": "Write in a clear, straightforward style with practical advice and realistic outcomes",
+            "Realistic": "Provide clear, practical advice based on real experiences, focusing on actions, realistic outcomes, and balanced perspectives.",
             "Shakespearean": "Write in eloquent, theatrical Old English style with 'thee', 'thou', and poetic metaphors",
             "Gym Bro": "Use modern gym culture slang, high energy, and fitness metaphors",
             "Zen Master": "Employ calm, mindful language with Eastern philosophical concepts",
@@ -157,7 +149,7 @@ class GenreStylingAgent(StoryAgentBase):
         Original story:
         {draft}
         
-        Maintain the core message but transform the language and style while keeping it between 100-150 words.
+        Maintain the core message but transform the language and style while keeping it between 150-250 words.
         """
         
         return self.generate_response(prompt)
@@ -176,10 +168,11 @@ class FinalComparisonAgent(StoryAgentBase):
     def finalize_story(self, story: str) -> str:
         prompt = f"""
         Review and refine this story using the following steps:
-        1. Check if the story is between 100-150 words
+        1. Check if the story is between 150-250 words
         2. Verify the narrative flow is coherent
         3. Ensure the motivational message is clear
         4. Maintain consistent style throughout
+        5. Avoid starting with titles
         
         Story to review:
         {story}
