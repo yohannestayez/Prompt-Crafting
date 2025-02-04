@@ -40,6 +40,7 @@ def get_autogen_config():
     }
 
 GENRES = [
+    "Realistic",
     "Shakespearean",
     "Gym Bro",
     "Zen Master",
@@ -124,6 +125,14 @@ class GenreStylingAgent(StoryAgentBase):
         system_message = """
         You are the GenreStyling agent responsible for adapting the story to a specific genre.
         Apply appropriate language, metaphors, and stylistic elements based on the chosen genre.
+        
+        For the Realistic genre:
+        - Provide practical, down-to-earth advice and perspectives
+        - Use clear, straightforward language without metaphors or stylistic flourishes
+        - Draw from real-world experiences and common situations
+        - Focus on actionable steps and realistic outcomes
+        - Acknowledge both challenges and opportunities in a balanced way
+        - Maintain empathy while being honest and direct
         """
         super().__init__(
             name="GenreStyling",
@@ -132,6 +141,7 @@ class GenreStylingAgent(StoryAgentBase):
     
     def style_story(self, draft: str, genre: str) -> str:
         genre_prompts = {
+            "Realistic": "Write in a clear, straightforward style with practical advice and realistic outcomes",
             "Shakespearean": "Write in eloquent, theatrical Old English style with 'thee', 'thou', and poetic metaphors",
             "Gym Bro": "Use modern gym culture slang, high energy, and fitness metaphors",
             "Zen Master": "Employ calm, mindful language with Eastern philosophical concepts",
