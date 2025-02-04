@@ -4,13 +4,17 @@ import random
 import google.generativeai as genai
 import asyncio
 
-# LLM Configuration
+# LLM Configuration for both Gemini and AutoGen
 llm_config = {
-    "temperature": 0.9,
+    "temperature": 0.9,    # Increased for more randomness
     "max_tokens": 150,
-    "top_p": 0.95,
+    "top_p": 0.95,        # Increased for more variety
+    "frequency_penalty": 0.8,  # Increased to reduce repetition
+    "presence_penalty": 0.8,   # Increased to encourage novelty
+    "seed": None,         # Removed fixed seed for randomness
+    "base_url": "https://generativelanguage.googleapis.com/v1beta",
+    "api_type": "google" 
 }
-
 # Convert LLM config to Gemini's format
 def get_gemini_config():
     config = genai.types.GenerationConfig(
