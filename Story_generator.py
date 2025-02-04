@@ -191,24 +191,7 @@ class StoryGroupChat:
         self.genre_styling = GenreStylingAgent()
         self.final_comparison = FinalComparisonAgent()
         
-        # Create GroupChat
-        self.group_chat = autogen.GroupChat(
-            agents=[
-                self.user_proxy,
-                self.prompt_variation,
-                self.genre_styling,
-                self.final_comparison
-            ],
-            messages=[],
-            max_round=4
-        )
-        
-        # Create GroupChatManager
-        self.manager = autogen.GroupChatManager(
-            groupchat=self.group_chat,
-            llm_config=get_autogen_config()
-        )
-    
+ 
     async def generate_story(self, base_prompt: str, genre: Optional[str] = None) -> Dict:
         # Step 1: Validate input
         validated_input = self.user_proxy.validate_input(base_prompt, genre)
